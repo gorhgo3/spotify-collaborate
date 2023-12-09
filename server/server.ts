@@ -1,7 +1,5 @@
-import server from './index'
+import express from 'express'
 
-const PORT = process.env.PORT || 3000
+const server = express()
 
-server.listen(PORT, () => {
-  console.log(`Example app listening on port ${PORT}`)
-})
+export default server
