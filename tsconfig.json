@@ -18,8 +18,18 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    /* Paths */
+    "baseUrl": "./",
+    "paths": {  
+      "@models/*": ["./models/*"],
+      "@styles/*": ["./client/styles/*"],
+      "@assets/*": ["./client/assets/*"],
+      "@pages/*": ["./client/pages/*"],
+      "@components/*": ["./client/components/*"],
+    },
   },
-  "include": ["./client/App.tsx", "./client/main.tsx"],
+  "include": ["client/components/App.tsx", "./client/main.tsx"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
