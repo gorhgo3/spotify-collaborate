@@ -28,6 +28,7 @@
       "@assets/*": ["./client/assets/*"],
       "@pages/*": ["./client/pages/*"],
       "@components/*": ["./client/components/*"],
+      "@apis/*": ["./client/apis/*"],
     },
   },
   "include": ["client/components/App.tsx", "./client/main.tsx"],
