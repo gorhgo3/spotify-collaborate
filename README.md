@@ -1,12 +1,34 @@
-# React + TypeScript + Vite
+# Spotify Collaboration API Exploration
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Overview
+This repository documents our exploration of alternative pipelines for interacting with Spotify's API, specifically for user playlist collaboration. This became necessary when Spotify discontinued existing API features during our final group project at EDA.
 
-Currently, two official plugins are available:
+## Objective
+The main goal is to establish a server-side master account for Spotify, allowing client-side user logins. All collaborative interactions will be conducted through the server account, streamlining playlist management on Spotify's client.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Background
+Our final group project faced challenges due to changes in Spotify's API. This repository serves as a continuation of that work, focusing on exploring viable alternatives.
 
-## Expanding the ESLint configuration
+## Approach
+- **Server-Side Master Account**: Implementing a master account on the server to manage all user collaborations.
+- **Client-Side User Interaction**: Ensuring that each user can log in and interact from the client-side.
+- **Spotify Client Integration**: Implementing collaborative playlists directly onto the Spotify client.
+- **Database Management**: Initially considering, but ultimately avoiding, the complexities of maintaining long-term databases for this purpose.
 
-Exploring with the Spotify api with the aim of developing an application that works around restrictions playlist interaction
+## Getting Started
+[Instructions for setting up the project, including any prerequisites, dependencies, and environment setup.]
+
+## Usage
+[Guidelines on how to use the project, including examples of how to run the code.]
+
+## Contributing
+[Instructions for how others can contribute to the project.]
+
+## License
+[Details about the license under which this project is released.]
+
+## Acknowledgments
+[Shoutouts to individuals or organizations that helped in the development process.]
+
+## Contact
+[Your contact information or instructions on how to reach you for further queries.]
