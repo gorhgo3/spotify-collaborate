@@ -1,9 +1,10 @@
 import App from '@components/App'
+import Title from '@components/Title'
 
 function HomePage() {
   return (
     <div>
-      <h1 className='title'>HomePage</h1>
+      <Title />
       <App />
     </div>
   )
