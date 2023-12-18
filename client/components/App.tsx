@@ -7,7 +7,6 @@ function App() {
 
   return (
     <>
-      <h4>Hello world</h4>
       <button className="btn btn-primary m-1" onClick={ShadowLogin}>
         Server Log in
       </button>
