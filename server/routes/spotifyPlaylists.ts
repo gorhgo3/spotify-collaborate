@@ -49,4 +49,21 @@ router.get('/get-playlists', async (req, res) => {
   }
 })
 
+// GET playlist details
+router.get(`/details/:playlistId`, async (req, res) => {
+  try {
+    const { playlistId } = req.params
+    const getTracksRoute = `https://api.spotify.com/v1/playlists/${playlistId}`
+    const response = await axios.get(getTracksRoute, {
+      headers: {
+        Authorization: `Bearer ${shadowCredentials.access_token}`,
+        'Content-Type': 'application/json',
+      },
+    })
+    res.json({ details: response.data })
+  } catch (error) {
+    res.status(500).send('Error getting playlist details')
+  }
+})
+
 export default router
