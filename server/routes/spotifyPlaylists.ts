@@ -66,4 +66,6 @@ router.get(`/details/:playlistId`, async (req, res) => {
   }
 })
 
+// create a new get all USER playlists assigned to the shadow account
+
 export default router
