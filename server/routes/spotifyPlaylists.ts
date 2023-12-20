@@ -33,4 +33,20 @@ router.post('/add-playlist', async (req, res) => {
   }
 })
 
+// GET all shadow playlists
+router.get('/get-playlists', async (req, res) => {
+  try {
+    const getPlaylistsRoute = `https://api.spotify.com/v1/me/playlists`
+    const response = await axios.get(getPlaylistsRoute, {
+      headers: {
+        Authorization: `Bearer ${shadowCredentials.access_token}`,
+        'Content-Type': 'application/json',
+      },
+    })
+    res.json({ playlists: response.data })
+  } catch (error) {
+    res.status(500).send('Error getting playlists')
+  }
+})
+
 export default router
