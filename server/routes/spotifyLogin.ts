@@ -19,7 +19,25 @@ router.get('/login', (req, res) => {
   // Initialise server-spotify connection
   try {
     const state = generateRandomString(16)
-    const scope = 'user-read-private user-read-email'
+    const scope = `
+      ugc-image-upload 
+      user-read-playback-state 
+      user-modify-playback-state 
+      user-read-currently-playing 
+      app-remote-control 
+      playlist-read-private 
+      playlist-read-collaborative 
+      playlist-modify-private 
+      playlist-modify-public 
+      user-follow-modify 
+      user-follow-read 
+      user-read-playback-position 
+      user-top-read 
+      user-read-recently-played 
+      user-library-modify 
+      user-library-read 
+      user-read-email 
+      user-read-private`
     res.redirect(
       'https://accounts.spotify.com/authorize?' +
         querystring.stringify({
