@@ -3,17 +3,16 @@ import { config } from 'dotenv'
 import * as querystring from 'querystring'
 import generateRandomString from '../functions/randomString'
 import axios from 'axios'
+import shadowCredentials from '../shadow'
 
 const router = Router()
 config()
 
 const client_id = process.env.CLIENT_ID
 const client_secret = process.env.CLIENT_SECRET
-const redirect_uri =
-process.env.SERVER_ADDRESS + '/api/v1/server-master/callback'
+const redirect_uri = process.env.SERVER_ADDRESS + '/api/v1/shadow/callback'
 
-
-//api/v1/server-master
+//api/v1/shadow
 
 // GET server login
 router.get('/login', (req, res) => {
@@ -32,15 +31,9 @@ router.get('/login', (req, res) => {
         })
     )
   } catch (error) {
-    console.log(error.message)
     res.status(500).send(error.message)
   }
 })
-
-// update to session cookies
-let access_token
-let refresh_token
-let expires_in
 
 // GET server login callback
 router.get('/callback', async (req, res) => {
@@ -72,24 +65,25 @@ router.get('/callback', async (req, res) => {
           Buffer.from(client_id + ':' + client_secret).toString('base64'),
       },
     })
-    access_token = response?.data.access_token
-    refresh_token = response?.data.refresh_token
-    expires_in = response?.data.expires_in
+    shadowCredentials.access_token = response?.data.access_token
+    shadowCredentials.refresh_token = response?.data.refresh_token
+    shadowCredentials.expires_in = response?.data.expires_in
+    // handle the user_id?
     res.redirect(process.env.CLIENT_ADDRESS + '/home')
   }
 })
 
-// GET shadow profile credentials (test)
+// GET shadow profile credentials
 router.get('/session/test', async (req, res) => {
   try {
     const data = await axios
       .get('https://api.spotify.com/v1/me', {
-        headers: { Authorization: `Bearer ${access_token}` },
+        headers: { Authorization: `Bearer ${shadowCredentials.access_token}` },
       })
       .then((res) => res.data)
+    shadowCredentials.user = data
     res.json(data)
   } catch (error) {
-    console.log(error.message)
     res.status(500).send(error.message)
   }
 })
