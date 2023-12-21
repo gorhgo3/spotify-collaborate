@@ -1,47 +1,52 @@
+import {
+  Playlist,
+  PlaylistDetails,
+  NewPlaylistDetails,
+  FetchPlaylistDetails,
+} from '@models/playlists.ts'
 import axios from 'axios'
-import { UserDetails } from '@models/user'
-import { config } from 'dotenv'
 
-export async function fetchSpotifyUser(
+export async function fetchUserPLaylists(
   access_token: string
-): Promise<UserDetails> {
+): Promise<Playlist> {
+  const api = 'https://api.spotify.com/v1/me/playlists'
   return axios
-    .get('https://api.spotify.com/v1/me', {
-      headers: { Authorization: `Bearer ${access_token}` },
+    .get(api, {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+        'Content-Type': 'application/json',
+      },
     })
     .then((res) => res.data)
 }
 
-type SpotifyAuth = {
-  access_token: string
-  token_type: string
-  expires_in: number
-  refresh_token: string
-  scope: string
+export async function fetchPlaylistId(
+  data: FetchPlaylistDetails
+): Promise<PlaylistDetails> {
+  const api = `https://api.spotify.com/v1/playlists/${data.playlistId}`
+  return axios
+    .get(api, {
+      headers: {
+        Authorization: `Bearer ${data.access_token}`,
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((res) => res.data)
 }
 
-export async function fetchSpotifyAuth(
-  code: string,
-  state: string
-): Promise<SpotifyAuth> {
-  config()
-  const client_id = process.env.CLIENT_ID
-  const client_secret = process.env.CLIENT_SECRET
-  const redirect_uri = process.env.SERVER_ADDRESS + '/api/v1/shadow/callback'
-
-  return axios({
-    method: 'post',
-    url: 'https://accounts.spotify.com/api/token',
-    data: {
-      code: code,
-      redirect_uri: redirect_uri,
-      grant_type: 'authorization_code',
-    },
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded',
-      Authorization:
-        'Basic ' +
-        Buffer.from(client_id + ':' + client_secret).toString('base64'),
-    },
-  }).then((res) => res.data)
+export async function addPlaylist(data: NewPlaylistDetails): Promise<string> {
+  const api = `https://api.spotify.com/v1/users/${data.userId}/playlists`
+  return axios
+    .post(api, {
+      headers: {
+        Authorization: `Bearer ${data.access_token}`,
+        'Content-Type': 'application/json',
+      },
+      data: {
+        name: data.playlistName,
+        description: data.playlistDescription,
+        public: true,
+      },
+    })
+    .then((res) => res.data)
 }

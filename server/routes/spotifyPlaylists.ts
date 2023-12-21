@@ -1,32 +1,20 @@
-import axios from 'axios'
 import Router from 'express'
 import shadowCredentials from '../shadow'
+import * as spotify from '../api/spotify/playlists'
 
 const router = Router()
 
 // POST creates a public playlist
 router.post('/add-playlist', async (req, res) => {
   try {
-    const playlistName = req.body.playlistName
-    const playlistDescription = req.body.playlistDescription
-    // need to find the user_id
-    const userId = shadowCredentials.user?.id
-    const addPlaylistRoute = `https://api.spotify.com/v1/users/${userId}/playlists`
-    await axios.post(
-      addPlaylistRoute,
-      {
-        name: playlistName,
-        description: playlistDescription,
-        public: true,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${shadowCredentials.access_token}`,
-          'Content-Type': 'application/json',
-        },
-      }
-    )
-    res.send('Successfully added playlist' + playlistName)
+    const data = {
+      userId: shadowCredentials.user?.id,
+      access_token: shadowCredentials.access_token,
+      playlistName: req.body.playlistName,
+      playlistDescription: req.body.playlistDescription,
+    }
+    await spotify.addPlaylist(data)
+    res.send('Successfully added playlist' + req.body.playlistName)
   } catch (error) {
     console.log(error.message)
     res.status(500).send('Error adding playlist')
@@ -36,14 +24,10 @@ router.post('/add-playlist', async (req, res) => {
 // GET all shadow playlists
 router.get('/get-playlists', async (req, res) => {
   try {
-    const getPlaylistsRoute = `https://api.spotify.com/v1/me/playlists`
-    const response = await axios.get(getPlaylistsRoute, {
-      headers: {
-        Authorization: `Bearer ${shadowCredentials.access_token}`,
-        'Content-Type': 'application/json',
-      },
-    })
-    res.json({ playlists: response.data })
+    const playlists = await spotify.fetchUserPLaylists(
+      shadowCredentials.access_token
+    )
+    res.json({ playlists })
   } catch (error) {
     res.status(500).send('Error getting playlists')
   }
@@ -53,14 +37,12 @@ router.get('/get-playlists', async (req, res) => {
 router.get(`/details/:playlistId`, async (req, res) => {
   try {
     const { playlistId } = req.params
-    const getTracksRoute = `https://api.spotify.com/v1/playlists/${playlistId}`
-    const response = await axios.get(getTracksRoute, {
-      headers: {
-        Authorization: `Bearer ${shadowCredentials.access_token}`,
-        'Content-Type': 'application/json',
-      },
-    })
-    res.json({ details: response.data })
+    const data = {
+      access_token: shadowCredentials.access_token,
+      playlistId,
+    }
+    const playlistDetails = await spotify.fetchPlaylistId(data)
+    res.json({ playlistDetails })
   } catch (error) {
     res.status(500).send('Error getting playlist details')
   }
