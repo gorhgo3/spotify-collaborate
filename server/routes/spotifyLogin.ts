@@ -3,7 +3,7 @@ import { config } from 'dotenv'
 import * as querystring from 'querystring'
 import generateRandomString from '../functions/randomString'
 import shadowCredentials from '../shadow'
-import { fetchSpotifyAuth, fetchSpotifyUser } from '../api/spotify/playlists'
+import { fetchSpotifyAuth, fetchSpotifyUser } from '../api/spotify/user'
 
 const router = Router()
 
