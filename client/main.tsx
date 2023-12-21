@@ -4,8 +4,10 @@ import { Auth0Provider } from '@auth0/auth0-react'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import { router } from './routes/index.tsx'
 import Navbar from '@components/Navbar.tsx'
+import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 
 const routes = createBrowserRouter(router)
+const queryClient = new QueryClient()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
@@ -13,11 +15,13 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
       domain="manaia-2023-murray.au.auth0.com"
       clientId="XkOBUlgkesz5PLbTkVYoytgfC1c8GYcb"
       authorizationParams={{
-        redirect_uri: window.location.origin + "/home",
+        redirect_uri: window.location.origin + '/home',
       }}
     >
-      <Navbar />
-      <RouterProvider router={routes} />
+      <QueryClientProvider client={queryClient}>
+        <Navbar />
+        <RouterProvider router={routes} />
+      </QueryClientProvider>
     </Auth0Provider>
   </React.StrictMode>
 )
