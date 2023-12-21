@@ -2,22 +2,19 @@ import Router from 'express'
 import { config } from 'dotenv'
 import * as querystring from 'querystring'
 import generateRandomString from '../functions/randomString'
-import axios from 'axios'
 import shadowCredentials from '../shadow'
+import { fetchSpotifyAuth, fetchSpotifyUser } from '../api/spotify/playlists'
 
 const router = Router()
-config()
-
-const client_id = process.env.CLIENT_ID
-const client_secret = process.env.CLIENT_SECRET
-const redirect_uri = process.env.SERVER_ADDRESS + '/api/v1/shadow/callback'
 
 //api/v1/shadow
 
-// GET server login
+// GET initialise server-spotify connection
 router.get('/login', (req, res) => {
-  // Initialise server-spotify connection
   try {
+    config()
+    const client_id = process.env.CLIENT_ID
+    const redirect_uri = process.env.SERVER_ADDRESS + '/api/v1/shadow/callback'
     const state = generateRandomString(16)
     const scope = `
       ugc-image-upload 
@@ -53,9 +50,8 @@ router.get('/login', (req, res) => {
   }
 })
 
-// GET server login callback
+// GET server Spotify authenticate callback
 router.get('/callback', async (req, res) => {
-  // Spotify authenticate callback
   const code = req.query.code || null
   const state = req.query.state || null
   if (state === null) {
@@ -68,25 +64,12 @@ router.get('/callback', async (req, res) => {
     )
   } else {
     // Success
-    const response = await axios({
-      method: 'post',
-      url: 'https://accounts.spotify.com/api/token',
-      data: {
-        code: code,
-        redirect_uri: redirect_uri,
-        grant_type: 'authorization_code',
-      },
-      headers: {
-        'content-type': 'application/x-www-form-urlencoded',
-        Authorization:
-          'Basic ' +
-          Buffer.from(client_id + ':' + client_secret).toString('base64'),
-      },
-    })
-    shadowCredentials.access_token = response?.data.access_token
-    shadowCredentials.refresh_token = response?.data.refresh_token
-    shadowCredentials.expires_in = response?.data.expires_in
-    // handle the user_id?
+    const spotifyAuth = await fetchSpotifyAuth(code, state)
+    // global shadowCredentials
+    shadowCredentials.access_token = spotifyAuth.access_token
+    shadowCredentials.refresh_token = spotifyAuth.refresh_token
+    shadowCredentials.expires_in = spotifyAuth.expires_in
+    shadowCredentials.user = await fetchSpotifyUser(spotifyAuth.access_token)
     res.redirect(process.env.CLIENT_ADDRESS + '/home')
   }
 })
@@ -94,13 +77,7 @@ router.get('/callback', async (req, res) => {
 // GET shadow profile credentials
 router.get('/session/test', async (req, res) => {
   try {
-    const data = await axios
-      .get('https://api.spotify.com/v1/me', {
-        headers: { Authorization: `Bearer ${shadowCredentials.access_token}` },
-      })
-      .then((res) => res.data)
-    shadowCredentials.user = data
-    res.json(data)
+    res.json(shadowCredentials.user)
   } catch (error) {
     res.status(500).send(error.message)
   }
