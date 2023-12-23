@@ -5,7 +5,7 @@ function SinglePlaylist(props: Item) {
     <div className="card m-1" style={{ width: '15rem' }}>
       <img
         className="card-img-top"
-        src={props.images[0].url}
+        src={props.images[0]?.url}
         alt="Card image cap"
       />
       <div className="card-body d-flex flex-column justify-content-between">
