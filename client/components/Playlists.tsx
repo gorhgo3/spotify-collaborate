@@ -21,7 +21,7 @@ function Playlists() {
   return (
     <div className="container d-flex flex-wrap">
       {data?.playlists.items.map((item: Item) => (
-        <SinglePlaylist {...item}/>
+        <SinglePlaylist {...item} key={item.id}/>
       ))}
     </div>
   )
