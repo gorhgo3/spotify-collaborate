@@ -82,4 +82,17 @@ router.get('/session/test', async (req, res) => {
   }
 })
 
+// GET shadow profile credentials
+router.get('/session/active', async (req, res) => {
+  try {
+    if (shadowCredentials.user === null) {
+      res.send(false)
+    } else {
+      res.send(true)
+    }
+  } catch (error) {
+    res.status(500).send(error.message)
+  }
+})
+
 export default router
