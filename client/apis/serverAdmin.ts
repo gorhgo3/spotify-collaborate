@@ -7,3 +7,7 @@ export function ShadowLogin() {
 export function testShadowAccount() {
   return axios.get('/api/v1/shadow/session/test')
 }
+
+export function isServerAccount() {
+  return axios.get('/api/v1/shadow/session/active')
+}
