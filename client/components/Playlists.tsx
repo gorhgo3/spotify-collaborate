@@ -4,14 +4,12 @@ import { Item } from '@models/playlists'
 import SinglePlaylist from '@components/SinglePlaylist'
 
 function Playlists() {
-  // need to include a mutation refetch
   const { data, error } = useQuery({
     // fetch all playlists of shadow account and display
     queryKey: ['spotifyPlaylists'],
     queryFn: async () => getPlaylists(),
   })
   
-
   if (error) {
     ;<div className="">
       <h1>error</h1>
@@ -28,4 +26,3 @@ function Playlists() {
 }
 
 export default Playlists
-
