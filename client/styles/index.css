@@ -1,0 +1,11 @@
+.nav-selectors {
+  flex: auto;
+  padding: 1rem;
+  color: black;
+}
+
+.nav-selectors:hover {
+  transform: scale(1.02);
+  text-decoration: none;
+  color: black;
+}
