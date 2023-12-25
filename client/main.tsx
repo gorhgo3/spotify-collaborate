@@ -6,6 +6,7 @@ import { router } from './routes/index.tsx'
 import Navbar from '@components/Navbar.tsx'
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query'
 import ServerSetup from '@components/ServerSetup.tsx'
+import Authenticated from '@components/Authenticated.tsx'
 
 const routes = createBrowserRouter(router)
 const queryClient = new QueryClient()
@@ -19,12 +20,14 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         redirect_uri: window.location.origin + '/home',
       }}
     >
-      <QueryClientProvider client={queryClient}>
-        <ServerSetup>
-          <Navbar />
-          <RouterProvider router={routes} />
-        </ServerSetup>
-      </QueryClientProvider>
+      <ServerSetup>
+        <QueryClientProvider client={queryClient}>
+          <Authenticated>
+            <Navbar />
+            <RouterProvider router={routes} />
+          </Authenticated>
+        </QueryClientProvider>
+      </ServerSetup>
     </Auth0Provider>
   </React.StrictMode>
 )
