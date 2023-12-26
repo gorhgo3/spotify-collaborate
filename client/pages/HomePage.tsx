@@ -13,21 +13,24 @@ function HomePage() {
             className="nav-selectors"
             style={{ backgroundColor: '#1ED760' }}
           >
-            Playlists
+            <i
+              className="fa-solid fa-chart-column"
+              style={{ fontSize: '2rem' }}
+            ></i>
           </Link>
           <Link
-            to="/playlists"
+            to="/profile"
             className="nav-selectors"
             style={{ backgroundColor: '#FFFFFF' }}
           >
-            Profile
+            <i className="fa-solid fa-id-card" style={{ fontSize: '2rem' }}></i>
           </Link>
           <Link
-            to="/playlists"
+            to="/tracks"
             className="nav-selectors"
             style={{ backgroundColor: '#191414', color: 'white' }}
           >
-            Tracks
+            <i className="fa-solid fa-music" style={{ fontSize: '2rem' }}></i>
           </Link>
         </div>
       </div>
