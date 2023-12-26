@@ -9,3 +9,16 @@
   text-decoration: none;
   color: black;
 }
+
+.profile-img {
+  width: 10rem;
+}
+
+ul {
+  list-style: none;
+}
+
+.profile-management {
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+}
