@@ -50,3 +50,23 @@ export async function addPlaylist(data: NewPlaylistDetails): Promise<string> {
     })
     .then((res) => res.data)
 }
+
+type AddTrackData = {
+  accessToken: string
+  playlistId: string
+  trackUri: string
+}
+
+export async function addTrack(data: any) {
+  const api = `https://api.spotify.com/v1/playlists/${data.playlistId}/tracks`
+  return axios.post(
+    api,
+    { uris: [data.trackUri] },
+    {
+      headers: {
+        Authorization: `Bearer ${data.accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+}

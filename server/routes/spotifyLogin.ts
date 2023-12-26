@@ -36,14 +36,13 @@ router.get('/login', (req, res) => {
       user-read-email 
       user-read-private`
     res.redirect(
-      'https://accounts.spotify.com/authorize?' +
-        querystring.stringify({
-          response_type: 'code',
-          client_id: client_id,
-          scope: scope,
-          redirect_uri: redirect_uri,
-          state: state,
-        })
+      `https://accounts.spotify.com/authorize?${querystring.stringify({
+        response_type: 'code',
+        client_id: client_id,
+        scope: scope,
+        redirect_uri: redirect_uri,
+        state: state,
+      })}`
     )
   } catch (error) {
     res.status(500).send(error.message)
@@ -78,6 +77,19 @@ router.get('/callback', async (req, res) => {
 router.get('/session/test', async (req, res) => {
   try {
     res.json(shadowCredentials.user)
+  } catch (error) {
+    res.status(500).send(error.message)
+  }
+})
+
+// GET shadow profile credentials
+router.get('/session/active', async (req, res) => {
+  try {
+    if (shadowCredentials.user === null) {
+      res.send(false)
+    } else {
+      res.send(true)
+    }
   } catch (error) {
     res.status(500).send(error.message)
   }
