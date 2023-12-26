@@ -22,3 +22,34 @@ ul {
   margin-top: 5rem;
   margin-bottom: 5rem;
 }
+
+.track {
+  color: white;
+  background-color: #191414;
+  padding: 0.3rem;
+  margin: 0.1rem;
+  cursor: pointer;
+}
+
+.track:hover {
+  opacity: 0.9;
+}
+
+
+
+.playlist-header {
+  color: white;
+  background-color: #191414;
+  padding: 0.3rem;
+  padding: 1rem;
+  padding-bottom: 5rem;
+}
+
+.track-selector {
+  transition-duration: 0.5s;
+}
+
+.track-selector:active {
+  transform: scale(1.1);
+  background-color: #1ED760;
+}
