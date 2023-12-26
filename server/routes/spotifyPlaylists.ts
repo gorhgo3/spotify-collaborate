@@ -1,6 +1,8 @@
 import Router from 'express'
 import shadowCredentials from '../shadow'
 import * as spotify from '../api/spotify/playlists'
+import { fetchTrack } from '../api/spotify/tracks'
+import axios from 'axios'
 
 const router = Router()
 
@@ -48,6 +50,35 @@ router.get(`/details/:playlistId`, async (req, res) => {
   }
 })
 
-// create a new get all USER playlists assigned to the shadow account
+// handle adding new tracks
+router.post('/add-track/:trackId', async (req, res) => {
+  try {
+    const { trackId: trackUri } = req.params
+    const { playlistId } = req.body.data
+
+    await spotify.addTrack({
+      accessToken: shadowCredentials.access_token,
+      playlistId,
+      trackUri,
+    })
+    res.send('Successfully added track to playlist')
+  } catch (error) {
+    console.log(error.message)
+    res.send({ error: error })
+  }
+})
+
+router.get('/search/:trackName', async (req, res) => {
+  try {
+    const { trackName } = req.params
+    const response = await fetchTrack({
+      trackName,
+      accessToken: shadowCredentials.access_token,
+    })
+    res.json({ response })
+  } catch (error) {
+    res.send({ error })
+  }
+})
 
 export default router
