@@ -2,6 +2,8 @@ import { useQuery } from '@tanstack/react-query'
 import { getPlaylists } from '../apis/playlists'
 import { Item } from '@models/playlists'
 import SinglePlaylist from '@components/SinglePlaylist'
+import React from 'react'
+
 
 function Playlists() {
   const { data, error } = useQuery({
