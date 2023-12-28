@@ -4,7 +4,7 @@ import TracksResults from '@models/trackResults'
 
 type Playlists = {
   playlists: Playlist
-} 
+}
 
 export function getPlaylists(): Promise<Playlists> {
   return axios.get('/api/v1/playlists/get-playlists').then((res) => res.data)
@@ -14,9 +14,13 @@ export function getPlaylistDetails(playlistId: string): Promise<Playlist> {
   return axios.get(`/api/v1/playlists/details/${playlistId}`)
 }
 
-export function addPlaylistTrack(playlistId: string, trackUri: string): any {
-  console.log(trackUri, playlistId);
-
+export function addPlaylistTrack({
+  playlistId,
+  trackUri,
+}: {
+  playlistId: string
+  trackUri: string
+}): any {
   return axios.post(`/api/v1/playlists/add-track/${trackUri}`, {
     data: {
       playlistId,
