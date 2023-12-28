@@ -7,7 +7,7 @@ function Header() {
         Spotify Collab.
       </h1>
       <img
-        src="https://1000logos.net/wp-content/uploads/2021/04/Spotify-logo.png"
+        src="client/assets/Spotify-logo.png"
         alt=""
         className="img-fluid mx-auto d-block"
         style={{ width: '15rem' }}
