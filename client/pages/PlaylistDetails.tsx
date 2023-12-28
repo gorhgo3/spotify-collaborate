@@ -1,19 +1,15 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import {
-  addPlaylistTrack,
-  checkSpotifyTracks,
-  getPlaylistDetails,
-} from '../apis/playlists'
+import { getPlaylistDetails } from '../apis/playlists'
 import { Playlist, Item } from '@models/playlist'
 import NewTrack from '@components/NewTrack'
 
 function PlaylistDetails() {
   const { playlistId } = useParams()
 
+  // fetch all playlists of shadow account and display
   const { data, error, isLoading } = useQuery<Playlist>({
-    // fetch all playlists of shadow account and display
     queryKey: [playlistId],
     queryFn: async () =>
       getPlaylistDetails(playlistId as string).then(
@@ -32,11 +28,13 @@ function PlaylistDetails() {
             <h1 style={{ color: '#1ED760' }}>Playlist</h1>
             <h4 className="playlist-title title">{data.name}</h4>
             <img
-              className="playlist-image"
+              className="playlist-image rounded"
               src={data.images[0]?.url}
               alt="playlist-image"
             />
-            <p className="playlist-description">{data.description}</p>
+            <p className="playlist-description">
+              {data.description} edit button if owner
+            </p>
             <div className="addToPlaylist">
               {/* playlist add track form */}
               <NewTrack id={playlistId as string} />
