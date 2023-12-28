@@ -1,16 +1,31 @@
 import { Item } from '@models/trackResults'
-import { addPlaylistTrack, checkSpotifyTracks } from '../apis/playlists'
+import {
+  addPlaylistTrack,
+  checkSpotifyTracks,
+  getPlaylists,
+} from '../apis/playlists'
 import React, { useState } from 'react'
 import Button from 'react-bootstrap/Button'
 import Form from 'react-bootstrap/Form'
 import Modal from 'react-bootstrap/Modal'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 type Props = {
   id: string
 }
+
 function NewTrack(props: Props) {
   const [search, setSearch] = useState(false)
   const [searchResults, setSearchResults] = useState<Item[] | null>()
+
+  const queryClient = useQueryClient()
+  const mutation = useMutation({
+    mutationFn: addPlaylistTrack,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [props.id] })
+      setSearch(false)
+    },
+  })
 
   async function handleSearch(e: React.FormEventHandler<HTMLFormElement>) {
     e.preventDefault()
@@ -20,17 +35,11 @@ function NewTrack(props: Props) {
       .then((data) => setSearchResults(data.response.tracks.items))
   }
 
-  async function addToPlaylist(uri: string) {
-    // console.log(uri, props.id)
-    await addPlaylistTrack(props.id, uri)
-  }
-
   return (
     <>
       <Button variant="success" onClick={() => setSearch(true)}>
         Add Track
       </Button>
-
       <Modal
         show={search}
         onHide={() => {
@@ -58,7 +67,9 @@ function NewTrack(props: Props) {
               <div
                 className="track track-selector"
                 key={track.id}
-                onClick={() => addToPlaylist(track.uri)}
+                onClick={() =>
+                  mutation.mutate({ playlistId: props.id, trackUri: track.uri })
+                }
               >
                 <div className="details d-flex">
                   <img
