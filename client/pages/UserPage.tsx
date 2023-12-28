@@ -42,7 +42,7 @@ function UserPage() {
         )}
       </div>
       <Notice />
-      <App />
+      {/* <App /> */}
     </>
   )
 }
