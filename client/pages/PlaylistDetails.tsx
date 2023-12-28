@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getPlaylistDetails } from '../apis/playlists'
 import { Playlist, Item } from '@models/playlist'
 import NewTrack from '@components/NewTrack'
+import Track from '@components/Track'
 
 function PlaylistDetails() {
   const { playlistId } = useParams()
@@ -42,29 +43,7 @@ function PlaylistDetails() {
           </div>
           {/* playlist tracks */}
           {data.tracks.items.map((item: Item) => (
-            <div className="track" key={item.track.id}>
-              <div className="details d-flex">
-                <img
-                  src={item.track.album.images[0]?.url}
-                  alt=""
-                  style={{ width: '3rem', height: '3rem' }}
-                  className="mr-2"
-                />
-                <div className="details-text text-left">
-                  <p className="mb-0">{item.track.name}</p>
-                  <p className="mb-0" style={{ color: 'grey' }}>
-                    {item.track.explicit && '🅴'}
-                    {item.track.artists[0].name}
-                  </p>
-                </div>
-                <div className="ml-auto mr-2 align-self-center">
-                  <i
-                    className="fa-regular fa-circle-play"
-                    style={{ fontSize: '1.5rem', color: '#1ED760' }}
-                  ></i>
-                </div>
-              </div>
-            </div>
+            <Track key={item.track.id} {...item} />
           ))}
         </div>
       </div>
