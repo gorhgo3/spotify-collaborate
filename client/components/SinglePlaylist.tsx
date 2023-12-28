@@ -4,7 +4,7 @@ import React from 'react'
 
 function SinglePlaylist(props: Item) {
   return (
-    <div className="card m-1" style={{ width: '15rem' }}>
+    <div className="playlist card m-1" style={{ width: '15rem' }}>
       <Link
         to={props.id}
         className=""
